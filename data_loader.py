@@ -1,14 +1,22 @@
 import pandas as pd
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 
 def load_data_from_mongodb():
     """
     Connects to MongoDB Atlas using provided credentials and fetches data from the `key_task` database.
     Returns three DataFrames: clients, memberships, transactions.
     """
-    # MongoDB connection details
-    MONGO_URI = "mongodb+srv://nampardrakpa:wEQrlZQLRcbkF8cA@cluster0.rho0b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    DB_NAME = "key_task"
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Retrieve MongoDB credentials from environment variables
+    MONGO_URI = os.getenv("MONGO_URI")
+    DB_NAME = os.getenv("DB_NAME")
+
+    if not MONGO_URI or not DB_NAME:
+        raise ValueError("MongoDB URI or database name is missing in environment variables.")
 
     try:
         # Connect to MongoDB
