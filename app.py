@@ -149,8 +149,8 @@ with col1:
                  hole=0.4,
                  color='membership_status',
                  color_discrete_map={
-                     'Has Membership': '#2CA02C',
-                     'No Membership': '#FF7F0E'
+                     'Has Membership': '#1F77B4',
+                     'No Membership': '#FF6F61'
                  })
     
     # Format labels and tooltips
@@ -171,15 +171,28 @@ with col1:
 with col2:
     # Membership Tier Breakdown
     tier_counts = memberships['tier'].value_counts()
+
+    # Define the color map for each membership tier
+    tier_colors = {
+        'No Membership': '#F5F5DC',  # Beige
+        'Bronze': '#CD7F32',         # Bronze
+        'Silver': '#C0C0C0',         # Silver
+        'Gold': '#FFD700',           # Gold
+        'Platinum': '#E5E4E2'        # Platinum
+    }
+
+    # Create the bar chart with updated colors
     fig = px.bar(tier_counts, 
-                orientation='v', 
-                title='Membership Tier Distribution',
-                labels={'index':'Tier', 'value':'Count'},
-                color=tier_counts.index,
-                color_discrete_sequence=['#1F77B4', '#2CA02C'],
-                text_auto=True)
+                 orientation='v', 
+                 title='Membership Tier Distribution',
+                 labels={'index':'Tier', 'value':'Count'},
+                 color=tier_counts.index,
+                 color_discrete_map=tier_colors,  # Use color_discrete_map for custom color assignment
+                 text_auto=True)
+
     fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None)
     st.plotly_chart(fig, use_container_width=True, key="membership_tier_bar_chart")
+
 
 # =====================
 # Global Distribution
@@ -194,7 +207,7 @@ fig = px.choropleth(country_counts,
                     locations="country_code",
                     color="count",
                     hover_name="country_code",
-                    color_continuous_scale=['#2CA02C', '#1F77B4'],
+                    color_continuous_scale=['#DF00FF', '#6F00FF'],
                     projection="natural earth",
                     height=600)
 
